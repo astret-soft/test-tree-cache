@@ -139,8 +139,8 @@ class MockDb:
             if node.hidden and hidden:
                 return None
 
-            for pk, node_ in node.child:
-                result[pk] = get_repr(node_, hidden=hidden)
+            for _pk, node_ in node.child:
+                result[_pk] = get_repr(node_, hidden=hidden)
 
             return None
 
