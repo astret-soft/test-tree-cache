@@ -126,7 +126,11 @@ class MockDb:
         self._update_pk_index()
         return result
 
-    def all(self, pk: pk_type) -> Optional[None, Node]:  # only for mock db
+    def all(self, pk: pk_type = None) -> Optional[None, Node]:  # only for mock db
+        """ Get all data for mock DB
+        :param pk: get DB starts from Node by pk otherwise show all
+        :return: DB representation
+        """
         node = self.get(pk)
         result = {}
 
