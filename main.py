@@ -127,21 +127,19 @@ class MockDb:
         return result
 
     def all(self, pk: pk_type = None, hidden: bool = False) -> Optional[None, Node]:  # only for mock db
-        """ Get all data for mock DB
+        """ Get all data from mock DB
         :param pk: get visible DB Node by pk with ALL data inside
         :return: DB representation
         """
         root = self.get(pk)
 
-        def get_repr(node: Node, hidden: bool = False) -> Optional[None, Node]:
-            result = {}
-
-            if node.hidden and hidden:
+        def get_repr(node: Node) -> Optional[None, Node]:
+            if node.hidden:
                 return None
 
+            result = {}
             for _pk, node_ in node.child:
-                result[_pk] = get_repr(node_, hidden=hidden)
+                result[_pk] = get_repr(node_)
+            return result
 
-            return None
-
-        return get_repr(root, hidden=hidden)
+        return get_repr(root)
