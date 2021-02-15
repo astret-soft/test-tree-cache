@@ -126,17 +126,22 @@ class MockDb:
         self._update_pk_index()
         return result
 
-    def all(self, pk: pk_type = None) -> Optional[None, Node]:  # only for mock db
+    def all(self, pk: pk_type = None, hidden: bool = False) -> Optional[None, Node]:  # only for mock db
         """ Get all data for mock DB
-        :param pk: get DB starts from Node by pk otherwise show all
+        :param pk: get visible DB Node by pk with ALL data inside
         :return: DB representation
         """
-        node = self.get(pk)
-        result = {}
+        root = self.get(pk)
 
-        def get_visible(node_: Node, hidden: bool = False) -> Optional[None, Node]:
-            for node_ in node.child:
-                # todo: finish it!
+        def get_repr(node: Node, hidden: bool = False) -> Optional[None, Node]:
+            result = {}
+
+            if node.hidden and hidden:
+                return None
+
+            for pk, node_ in node.child:
+                result[pk] = get_repr(node_, hidden=hidden)
+
             return None
 
-        return get_visible(get_visible(pk)) if node else None
+        return get_repr(root, hidden=hidden)
